@@ -1,0 +1,31 @@
+class Solution:
+    def heapSort(self, arr):
+        
+        def heapifyDown(arr, ind, size):
+            largest = ind
+            lchild = 2 * ind + 1
+            rchild = 2 * ind + 2
+
+            if lchild < size and arr[lchild] > arr[largest]:
+                largest = lchild
+
+            if rchild < size and arr[rchild] > arr[largest]:
+                largest = rchild
+
+            if largest != ind:
+                arr[ind], arr[largest] = arr[largest], arr[ind]
+                heapifyDown(arr, largest, size)
+
+        size = len(arr)
+
+        
+        for ind in range(size // 2 - 1, -1, -1):
+            heapifyDown(arr, ind, size)
+
+        
+        last = size - 1
+        while last > 0:
+            arr[0], arr[last] = arr[last], arr[0]
+            heapifyDown(arr, 0, last)  
+            last -= 1   
+        return arr
