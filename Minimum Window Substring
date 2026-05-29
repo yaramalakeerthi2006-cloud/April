@@ -1,0 +1,50 @@
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        n = len(s)
+        m = len(t)
+        d = {}
+
+        
+        for ch in t:
+            if ch in d:
+                d[ch] += 1
+            else:
+                d[ch] = 1
+
+        left = 0
+        right = 0
+        minlen = float("inf")
+        count = 0
+        sindex = -1
+
+        while right < n:
+
+            # If character is needed
+            if s[right] in d and d[s[right]] > 0:
+                count += 1
+
+            # Decrease frequency
+            if s[right] in d:
+                d[s[right]] -= 1
+
+            # When all characters matched
+            while count == m:
+
+                if (right - left + 1) < minlen:
+                    minlen = right - left + 1
+                    sindex = left   # fixed variable name
+
+                # Remove left character
+                if s[left] in d:
+                    d[s[left]] += 1
+                    if d[s[left]] > 0:
+                        count -= 1
+
+                left += 1
+
+            right += 1
+
+        # Move return statement outside loop
+        if sindex == -1:
+            return ""
+        return s[sindex:sindex + minlen]
